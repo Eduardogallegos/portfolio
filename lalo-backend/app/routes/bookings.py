@@ -1,6 +1,9 @@
 from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi.responses import FileResponse
 from sqlalchemy.orm import Session
 from datetime import datetime
+import io
+from icalendar import Calendar, Event
 from app.database import get_db
 from app.models import User, Booking, Plan
 from app.schemas import BookingCreate, BookingResponse
@@ -87,3 +90,78 @@ async def get_booking(
         )
     
     return booking
+
+@router.get("/export/ical")
+async def export_ical(
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user)
+):
+    """Exportar bookings como archivo iCalendar (.ics)"""
+    
+    bookings = db.query(Booking).all()
+    
+    # Crear calendario
+    cal = Calendar()
+    cal.add('prodid', '-//Date Booking//Lalo//EN')
+    cal.add('version', '2.0')
+    cal.add('calscale', 'GREGORIAN')
+    cal.add('method', 'PUBLISH')
+    cal.add('x-wr-calname', '💕 Dates - Lalo & Pareja')
+    cal.add('x-wr-timezone', 'UTC')
+    
+    # Agregar eventos
+    for booking in bookings:
+        event = Event()
+        event.add('summary', f"💕 {booking.plan.nombre}")
+        event.add('description', booking.plan.descripcion)
+        event.add('dtstart', booking.fecha)
+        event.add('duration', f"PT{booking.plan.duracion_minutos}M")
+        event.add('location', 'Our Special Date')
+        event.add('uid', f"{booking.id}@datebooking.local")
+        event.add('dtstamp', datetime.utcnow())
+        
+        cal.add_component(event)
+    
+    # Generar archivo
+    ics_content = cal.to_ical()
+    
+    return FileResponse(
+        io.BytesIO(ics_content),
+        media_type="text/calendar",
+        headers={"Content-Disposition": "attachment; filename=dates.ics"}
+    )
+
+@router.get("/export/google-calendar")
+async def google_calendar_link(
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user)
+):
+    """Generar enlaces para abrir eventos en Google Calendar"""
+    
+    bookings = db.query(Booking).all()
+    
+    events = []
+    for booking in bookings:
+        # Formato de Google Calendar
+        start_time = booking.fecha.isoformat()
+        end_time = (booking.fecha + __import__('datetime').timedelta(minutes=booking.plan.duracion_minutos)).isoformat()
+        
+        google_url = (
+            f"https://calendar.google.com/calendar/render?"
+            f"action=TEMPLATE"
+            f"&text={booking.plan.nombre}"
+            f"&dates={start_time.replace('-', '').replace(':', '')}/"
+            f"{end_time.replace('-', '').replace(':', '')}"
+            f"&details={booking.plan.descripcion}"
+            f"&location=Our+Special+Date"
+        )
+        
+        events.append({
+            "id": booking.id,
+            "plan": booking.plan.nombre,
+            "fecha": booking.fecha.isoformat(),
+            "hora": booking.hora_inicio,
+            "google_url": google_url
+        })
+    
+    return {"events": events}
