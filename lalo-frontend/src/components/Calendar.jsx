@@ -22,7 +22,8 @@ export const Calendar = ({ onDateSelect, selectedDate }) => {
 
   const handleDateClick = (day) => {
     const selected = new Date(currentDate.getFullYear(), currentDate.getMonth(), day)
-    onDateSelect(selected.toISOString().split('T')[0])
+    // Usar toISOString completo (con hora)
+    onDateSelect(selected)
   }
 
   const daysInMonth = getDaysInMonth(currentDate)
@@ -38,7 +39,16 @@ export const Calendar = ({ onDateSelect, selectedDate }) => {
   }
 
   const monthName = currentDate.toLocaleString('es', { month: 'long', year: 'numeric' })
-  const selectedDateObj = selectedDate ? new Date(selectedDate) : null
+  
+  const isDateSelected = (day) => {
+    if (!selectedDate || !day) return false
+    const selected = new Date(selectedDate)
+    return (
+      day === selected.getDate() &&
+      currentDate.getMonth() === selected.getMonth() &&
+      currentDate.getFullYear() === selected.getFullYear()
+    )
+  }
 
   return (
     <div className="calendar">
@@ -64,14 +74,7 @@ export const Calendar = ({ onDateSelect, selectedDate }) => {
             key={index}
             className={`calendar-day ${
               day ? 'active' : 'empty'
-            } ${
-              day && selectedDateObj &&
-              day === selectedDateObj.getDate() &&
-              currentDate.getMonth() === selectedDateObj.getMonth() &&
-              currentDate.getFullYear() === selectedDateObj.getFullYear()
-                ? 'selected'
-                : ''
-            }`}
+            } ${isDateSelected(day) ? 'selected' : ''}`}
             onClick={() => day && handleDateClick(day)}
           >
             {day}

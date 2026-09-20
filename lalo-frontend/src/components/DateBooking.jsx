@@ -3,6 +3,7 @@ import { usePlans } from '../hooks/usePlans'
 import { useBookings } from '../hooks/useBookings'
 import { useAuth } from '../hooks/useAuth'
 import { Calendar } from './Calendar'
+import { TimePicker } from './TimePicker'
 import './DateBooking.css'
 
 export const DateBooking = () => {
@@ -22,12 +23,14 @@ export const DateBooking = () => {
 
     try {
       const dateTime = new Date(selectedDate)
-      dateTime.setHours(selectedTime.split(':')[0], selectedTime.split(':')[1])
+      const [hours, minutes] = selectedTime.split(':')
+      dateTime.setHours(parseInt(hours), parseInt(minutes))
       
       await createBooking(selectedPlan.id, dateTime.toISOString(), selectedTime)
       setSuccess(true)
       setSelectedPlan(null)
       setSelectedDate(null)
+      setSelectedTime('19:00')
       setTimeout(() => setSuccess(false), 3000)
     } catch (err) {
       // Error manejado por el hook
@@ -95,12 +98,7 @@ export const DateBooking = () => {
         {selectedPlan && selectedDate && (
           <div className="section">
             <h2>3. Elige una Hora</h2>
-            <input
-              type="time"
-              value={selectedTime}
-              onChange={(e) => setSelectedTime(e.target.value)}
-              className="time-input"
-            />
+            <TimePicker selectedTime={selectedTime} onTimeSelect={setSelectedTime} />
           </div>
         )}
 
