@@ -108,21 +108,6 @@
   font-style: italic;
 }
 
-.time-input {
-  width: 100%;
-  padding: 12px;
-  border: 2px solid #e0e0e0;
-  border-radius: 8px;
-  font-size: 16px;
-  max-width: 200px;
-}
-
-.time-input:focus {
-  outline: none;
-  border-color: #667eea;
-  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
-}
-
 .btn-large {
   width: 100%;
   padding: 16px;
@@ -170,4 +155,37 @@
   color: #666;
   font-size: 14px;
   margin: 4px 0;
+}
+
+/* Time Input Styles */
+.time-input-simple {
+  width: 100%;
+  max-width: 200px;
+  padding: 12px;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  text-align: center;
+  transition: border-color 0.3s;
+  background: white;
+  cursor: pointer;
+}
+
+.time-input-simple:focus {
+  outline: none;
+  border-color: #667eea;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+/* Remover ícono del reloj */
+.time-input-simple::-webkit-calendar-picker-indicator {
+  cursor: pointer;
+  opacity: 0;
+  width: 0;
+  padding: 0;
+}
+
+.time-input-simple::-moz-calendar-picker-indicator {
+  display: none;
 }

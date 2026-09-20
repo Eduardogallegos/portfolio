@@ -4,7 +4,9 @@ export const TimePicker = ({ selectedTime, onTimeSelect }) => {
   const hours = Array.from({ length: 24 }, (_, i) => i)
   const minutes = [0, 15, 30, 45]
 
-  const [hours_val, minutes_val] = selectedTime.split(':').map(Number)
+  const [hoursStr, minutesStr] = selectedTime.split(':')
+  const hours_val = parseInt(hoursStr)
+  const minutes_val = parseInt(minutesStr)
 
   const handleHourChange = (hour) => {
     const newMinutes = minutes_val.toString().padStart(2, '0')
