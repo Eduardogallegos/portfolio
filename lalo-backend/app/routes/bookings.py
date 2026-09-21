@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException, status
-from fastapi.responses import FileResponse
+from fastapi.responses import StreamingResponse
 from sqlalchemy.orm import Session
-from datetime import datetime
+from datetime import datetime, timedelta
 import io
 from icalendar import Calendar, Event
 from app.database import get_db
@@ -29,14 +29,12 @@ async def create_booking(
 ):
     """Agendar un date (solo la pareja puede)"""
     
-    # Validación 1: ¿Es la pareja?
     if current_user.role != "pareja":
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
             detail="Solo la pareja puede agendar dates"
         )
     
-    # Validación 2: ¿El plan existe?
     plan = db.query(Plan).filter(Plan.id == booking_data.plan_id).first()
     if not plan:
         raise HTTPException(
@@ -44,14 +42,12 @@ async def create_booking(
             detail="Plan no encontrado"
         )
     
-    # Validación 3: ¿La fecha es futura?
     if booking_data.fecha <= datetime.utcnow():
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail="La fecha debe ser en el futuro"
         )
     
-    # Validación 4: Validar formato de hora (HH:MM)
     try:
         datetime.strptime(booking_data.hora_inicio, "%H:%M")
     except ValueError:
@@ -60,7 +56,6 @@ async def create_booking(
             detail="Formato de hora inválido. Use HH:MM"
         )
     
-    # Crear booking
     new_booking = Booking(
         plan_id=booking_data.plan_id,
         fecha=booking_data.fecha,
@@ -115,7 +110,7 @@ async def export_ical(
         event.add('summary', f"💕 {booking.plan.nombre}")
         event.add('description', booking.plan.descripcion)
         event.add('dtstart', booking.fecha)
-        event.add('duration', f"PT{booking.plan.duracion_minutos}M")
+        event.add('duration', timedelta(minutes=booking.plan.duracion_minutos))
         event.add('location', 'Our Special Date')
         event.add('uid', f"{booking.id}@datebooking.local")
         event.add('dtstamp', datetime.utcnow())
@@ -125,7 +120,7 @@ async def export_ical(
     # Generar archivo
     ics_content = cal.to_ical()
     
-    return FileResponse(
+    return StreamingResponse(
         io.BytesIO(ics_content),
         media_type="text/calendar",
         headers={"Content-Disposition": "attachment; filename=dates.ics"}
@@ -142,9 +137,8 @@ async def google_calendar_link(
     
     events = []
     for booking in bookings:
-        # Formato de Google Calendar
         start_time = booking.fecha.isoformat()
-        end_time = (booking.fecha + __import__('datetime').timedelta(minutes=booking.plan.duracion_minutos)).isoformat()
+        end_time = (booking.fecha + timedelta(minutes=booking.plan.duracion_minutos)).isoformat()
         
         google_url = (
             f"https://calendar.google.com/calendar/render?"

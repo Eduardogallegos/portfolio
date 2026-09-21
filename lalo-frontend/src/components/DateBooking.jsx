@@ -163,13 +163,43 @@ export const DateBooking = () => {
         {selectedPlan && selectedDate && (
           <div className="section">
             <h2>3. Elige una Hora</h2>
-            <div className="time-picker-wrapper">
-              <input
-                type="time"
-                value={selectedTime}
-                onChange={(e) => setSelectedTime(e.target.value)}
-                className="time-input-simple"
-              />
+            <div className="hour-minute-selector">
+              <div className="time-group">
+                <label>Hora</label>
+                <select
+                  value={selectedTime.split(":")[0]}
+                  onChange={(e) => {
+                    const minutes = selectedTime.split(":")[1];
+                    setSelectedTime(`${e.target.value}:${minutes}`);
+                  }}
+                  className="time-select"
+                >
+                  {Array.from({ length: 24 }, (_, i) => i).map((hour) => (
+                    <option key={hour} value={hour.toString().padStart(2, "0")}>
+                      {hour.toString().padStart(2, "0")}:00
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              <span className="separator">:</span>
+
+              <div className="time-group">
+                <label>Minutos</label>
+                <select
+                  value={selectedTime.split(":")[1]}
+                  onChange={(e) => {
+                    const hours = selectedTime.split(":")[0];
+                    setSelectedTime(`${hours}:${e.target.value}`);
+                  }}
+                  className="time-select"
+                >
+                  <option value="00">00</option>
+                  <option value="15">15</option>
+                  <option value="30">30</option>
+                  <option value="45">45</option>
+                </select>
+              </div>
             </div>
           </div>
         )}
