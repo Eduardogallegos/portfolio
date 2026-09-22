@@ -157,6 +157,13 @@
   margin: 4px 0;
 }
 
+.booking-item .description {
+  color: #999;
+  font-size: 13px;
+  margin-top: 8px;
+  font-style: italic;
+}
+
 /* Time Input Styles */
 .time-input-simple {
   width: 100%;
@@ -178,14 +185,79 @@
   box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
 }
 
-/* Remover ícono del reloj */
-.time-input-simple::-webkit-calendar-picker-indicator {
-  cursor: pointer;
-  opacity: 0;
-  width: 0;
-  padding: 0;
+/* Hour Minute Selector */
+.hour-minute-selector {
+  display: flex;
+  align-items: flex-end;
+  gap: 12px;
+  max-width: 300px;
 }
 
-.time-input-simple::-moz-calendar-picker-indicator {
-  display: none;
+.time-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.time-group label {
+  font-size: 12px;
+  font-weight: 600;
+  color: #667eea;
+  text-transform: uppercase;
+}
+
+.time-select {
+  padding: 10px 12px;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  background: white;
+  min-width: 80px;
+  transition: border-color 0.3s;
+}
+
+.time-select:focus {
+  outline: none;
+  border-color: #667eea;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.time-select:hover {
+  border-color: #667eea;
+}
+
+.time-separator {
+  font-size: 24px;
+  font-weight: 700;
+  color: #667eea;
+  margin-bottom: 8px;
+}
+
+/* Export Buttons */
+.export-buttons {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.export-buttons button {
+  flex: 1;
+  min-width: 150px;
+  padding: 12px;
+  background: #f0f0f0;
+  color: #333;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.export-buttons button:hover {
+  background: #e0e0e0;
+  border-color: #667eea;
+  transform: translateY(-2px);
 }

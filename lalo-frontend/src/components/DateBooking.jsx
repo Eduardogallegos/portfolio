@@ -45,6 +45,59 @@ export const DateBooking = () => {
     }
   };
 
+  const downloadICalendar = async () => {
+    try {
+      const response = await fetch(
+        "http://localhost:8000/bookings/export/ical",
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+          },
+        },
+      );
+
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "dates.ics";
+      document.body.appendChild(a);
+      a.click();
+      window.URL.revokeObjectURL(url);
+      document.body.removeChild(a);
+    } catch (err) {
+      console.error("Error downloading iCalendar:", err);
+      alert("Error al descargar el calendario");
+    }
+  };
+
+  const openGoogleCalendar = async () => {
+    try {
+      const response = await fetch(
+        "http://localhost:8000/bookings/export/google-calendar",
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+          },
+        },
+      );
+
+      const data = await response.json();
+
+      if (data.events.length === 0) {
+        alert("No hay dates para agregar");
+        return;
+      }
+
+      // Abrir el primer evento en Google Calendar
+      // (en la práctica, podrías crear una página para elegir cuál abrir)
+      window.open(data.events[0].google_url, "_blank");
+    } catch (err) {
+      console.error("Error opening Google Calendar:", err);
+      alert("Error al abrir Google Calendar");
+    }
+  };
+
   return (
     <div className="date-booking-container">
       <div className="date-booking-card">
@@ -110,13 +163,43 @@ export const DateBooking = () => {
         {selectedPlan && selectedDate && (
           <div className="section">
             <h2>3. Elige una Hora</h2>
-            <div className="time-picker-wrapper">
-              <input
-                type="time"
-                value={selectedTime}
-                onChange={(e) => setSelectedTime(e.target.value)}
-                className="time-input-simple"
-              />
+            <div className="hour-minute-selector">
+              <div className="time-group">
+                <label>Hora</label>
+                <select
+                  value={selectedTime.split(":")[0]}
+                  onChange={(e) => {
+                    const minutes = selectedTime.split(":")[1];
+                    setSelectedTime(`${e.target.value}:${minutes}`);
+                  }}
+                  className="time-select"
+                >
+                  {Array.from({ length: 24 }, (_, i) => i).map((hour) => (
+                    <option key={hour} value={hour.toString().padStart(2, "0")}>
+                      {hour.toString().padStart(2, "0")}:00
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              <span className="separator">:</span>
+
+              <div className="time-group">
+                <label>Minutos</label>
+                <select
+                  value={selectedTime.split(":")[1]}
+                  onChange={(e) => {
+                    const hours = selectedTime.split(":")[0];
+                    setSelectedTime(`${hours}:${e.target.value}`);
+                  }}
+                  className="time-select"
+                >
+                  <option value="00">00</option>
+                  <option value="15">15</option>
+                  <option value="30">30</option>
+                  <option value="45">45</option>
+                </select>
+              </div>
             </div>
           </div>
         )}
@@ -140,12 +223,30 @@ export const DateBooking = () => {
         {bookings.length > 0 && (
           <div className="section">
             <h2>📅 Dates Agendados</h2>
+
+            {/* Botones de exportar */}
+            <div className="export-buttons">
+              <button
+                className="btn-secondary"
+                onClick={() => downloadICalendar()}
+              >
+                📥 Descargar como .ics
+              </button>
+              <button
+                className="btn-secondary"
+                onClick={() => openGoogleCalendar()}
+              >
+                📅 Abrir en Google Calendar
+              </button>
+            </div>
+
             <div className="bookings-list">
               {bookings.map((booking) => (
                 <div key={booking.id} className="booking-item">
                   <h4>{booking.plan.nombre}</h4>
                   <p>📅 {new Date(booking.fecha).toLocaleDateString()}</p>
                   <p>⏰ {booking.hora_inicio}</p>
+                  <p className="description">{booking.plan.descripcion}</p>
                 </div>
               ))}
             </div>
