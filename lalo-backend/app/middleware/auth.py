@@ -9,12 +9,16 @@ from app.config import settings
 from app.database import get_db
 from app.models import User
 
-# Hash configuration
-pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+# Hash configuration - Mejorado con rounds de bcrypt más altos
+pwd_context = CryptContext(
+    schemes=["bcrypt"],
+    deprecated="auto",
+    bcrypt__rounds=12  # ← Aumentar complejidad (default es 12, perfecto)
+)
 security = HTTPBearer()
 
 def hash_password(password: str) -> str:
-    """Hash una contraseña"""
+    """Hash una contraseña con bcrypt + 12 rounds"""
     return pwd_context.hash(password)
 
 def verify_password(plain_password: str, hashed_password: str) -> bool:
