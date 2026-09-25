@@ -1,8 +1,8 @@
 import { Routes, Route, Navigate } from 'react-router-dom'
 import { useAuth } from './hooks/useAuth'
 import { Landing } from './pages/Landing'
+import { TreasureHunt } from './pages/TreasureHunt'
 import { Login } from './components/Login'
-import { DateBooking } from './components/DateBooking'
 import './App.css'
 
 function ParejaSection() {
@@ -26,16 +26,28 @@ function ParejaSection() {
         </div>
       </nav>
 
-      <DateBooking />
+      <div className="wip-placeholder">
+        <img
+          src="/work-in-progress.jpg"
+          alt="En construcción"
+          className="wip-placeholder-img"
+        />
+        <p>Esta sección sigue en construcción 🚧</p>
+      </div>
     </div>
   )
 }
 
 function LoginRoute() {
   const { isAuthenticated } = useAuth()
+  const huntPassed = sessionStorage.getItem('hunt_passed') === 'true'
 
   if (isAuthenticated) {
     return <Navigate to="/pareja" replace />
+  }
+
+  if (!huntPassed) {
+    return <Navigate to="/pareja/enigma" replace />
   }
 
   return (
@@ -49,6 +61,7 @@ function App() {
   return (
     <Routes>
       <Route path="/" element={<Landing />} />
+      <Route path="/pareja/enigma" element={<TreasureHunt />} />
       <Route path="/pareja/login" element={<LoginRoute />} />
       <Route path="/pareja" element={<ParejaSection />} />
       <Route path="*" element={<Navigate to="/" replace />} />
