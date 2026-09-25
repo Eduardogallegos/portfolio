@@ -37,9 +37,10 @@ function ParejaSection() {
 
         <div className="pareja-message">
           <p>
-            He estado trabajando en esto desde hace un tiempo, pero por
+            Hace mucho te prometí construir algo así (apenas estábamos saliendo) 
+            y lo he estado trabajando en esto desde entonces, pero por
             varios motivos lo había puesto en pausa. Poco a poco le iré
-            agregando cositas.
+            agregando cositas (sorry, tiene bugs y cosas que iré arreglando)
           </p>
           <p>
             Por lo pronto quiero que sepas que me siento súper orgulloso

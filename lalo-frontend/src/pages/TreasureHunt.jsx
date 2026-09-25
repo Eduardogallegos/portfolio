@@ -29,7 +29,7 @@ export const TreasureHunt = () => {
       <div className="auth-card hunt-card">
         <h1>Antes de entrar... 🔍</h1>
         <p className="hunt-subtitle">
-          Responde bien las dos preguntas para llegar al login
+          Responde bien las dos preguntas para confirmar que eres tú 👀
         </p>
         {error && <div className="alert alert-error">{error}</div>}
         <form onSubmit={handleSubmit}>

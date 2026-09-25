@@ -27,12 +27,12 @@ async def create_booking(
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user)
 ):
-    """Agendar un date (solo la pareja puede)"""
+    """Agendar un date (solo mariana puede)"""
     
-    if current_user.role != "pareja":
+    if current_user.role != "mariana":
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
-            detail="Solo la pareja puede agendar dates"
+            detail="Solo mariana puede agendar dates"
         )
     
     plan = db.query(Plan).filter(Plan.id == booking_data.plan_id).first()
@@ -101,7 +101,7 @@ async def export_ical(
     cal.add('version', '2.0')
     cal.add('calscale', 'GREGORIAN')
     cal.add('method', 'PUBLISH')
-    cal.add('x-wr-calname', '💕 Dates - Lalo & Pareja')
+    cal.add('x-wr-calname', '💕 Dates - Lalo & Mariana')
     cal.add('x-wr-timezone', 'UTC')
     
     # Agregar eventos
