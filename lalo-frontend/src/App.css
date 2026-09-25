@@ -117,6 +117,34 @@
 }
 
 .wip-placeholder p {
-  color: #666;
+  color: rgba(255, 255, 255, 0.85);
   font-size: 14px;
+}
+
+.pareja-message {
+  background: white;
+  border-radius: 16px;
+  padding: 28px 24px;
+  margin-top: 32px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+  text-align: left;
+}
+
+.pareja-message p {
+  color: #333;
+  font-size: 15px;
+  line-height: 1.6;
+  margin-bottom: 16px;
+}
+
+.pareja-message p:last-child {
+  margin-bottom: 0;
+}
+
+.pareja-message-signoff {
+  text-align: center;
+  font-size: 20px !important;
+  font-weight: 600;
+  color: #667eea !important;
+  margin-top: 8px !important;
 }
