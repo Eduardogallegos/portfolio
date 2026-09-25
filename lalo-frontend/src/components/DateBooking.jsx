@@ -115,10 +115,10 @@ export const DateBooking = () => {
         <div className="user-role">
           <p>
             Conectado como:{" "}
-            <strong>{user?.role === "pareja" ? "💑 Pareja" : "👨 Lalo"}</strong>
+            <strong>{user?.role === "mariana" ? "💑 Mariana" : "👨 Lalo"}</strong>
           </p>
-          {user?.role !== "pareja" && (
-            <p className="warning">⚠️ Solo la pareja puede agendar dates</p>
+          {user?.role !== "mariana" && (
+            <p className="warning">⚠️ Solo Mariana puede agendar dates</p>
           )}
         </div>
 
@@ -205,7 +205,7 @@ export const DateBooking = () => {
         )}
 
         {/* Botón de Agendar */}
-        {user?.role === "pareja" && selectedPlan && selectedDate && (
+        {user?.role === "mariana" && selectedPlan && selectedDate && (
           <button
             className="btn-primary btn-large"
             onClick={handleBooking}

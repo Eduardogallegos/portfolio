@@ -6,7 +6,7 @@ from typing import Optional
 
 class UserBase(BaseModel):
     email: EmailStr
-    role: str  # "lalo" o "pareja"
+    role: str  # "lalo" o "mariana"
 
 class UserCreate(UserBase):
     password: str

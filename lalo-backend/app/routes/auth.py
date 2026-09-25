@@ -14,7 +14,7 @@ router = APIRouter(prefix="/auth", tags=["auth"])
 
 @router.post("/register", response_model=UserResponse)
 async def register(user_data: UserCreate, db: Session = Depends(get_db)):
-    """Registrar nuevo usuario (lalo o pareja)"""
+    """Registrar nuevo usuario (lalo o mariana)"""
     
     # Validar que el email no exista
     existing_user = db.query(User).filter(User.email == user_data.email).first()
@@ -25,10 +25,10 @@ async def register(user_data: UserCreate, db: Session = Depends(get_db)):
         )
     
     # Validar role
-    if user_data.role not in ["lalo", "pareja"]:
+    if user_data.role not in ["lalo", "mariana"]:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
-            detail="Role debe ser 'lalo' o 'pareja'"
+            detail="Role debe ser 'lalo' o 'mariana'"
         )
     
     # Crear usuario
