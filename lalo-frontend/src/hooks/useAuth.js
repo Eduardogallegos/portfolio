@@ -14,6 +14,8 @@ export const useAuth = () => {
       return null
     }
   })
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState(null)
 
   const register = async (email, password, role) => {
     setLoading(true)
