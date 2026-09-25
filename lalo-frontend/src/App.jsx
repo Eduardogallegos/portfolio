@@ -38,7 +38,7 @@ function ParejaSection() {
         <div className="pareja-message">
           <p>
             Hace mucho te prometí construir algo así (apenas estábamos saliendo) 
-            y lo he estado trabajando en esto desde entonces, pero por
+            y he estado trabajando en esto desde entonces, pero por
             varios motivos lo había puesto en pausa. Poco a poco le iré
             agregando cositas (sorry, tiene bugs y cosas que iré arreglando)
           </p>
