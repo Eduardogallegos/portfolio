@@ -33,6 +33,21 @@ function ParejaSection() {
           className="wip-placeholder-img"
         />
         <p>Esta sección sigue en construcción 🚧</p>
+
+        <div className="pareja-message">
+          <p>
+            He estado trabajando en esto desde hace un tiempo, pero por
+            varios motivos lo había puesto en pausa. Poco a poco le iré
+            agregando cositas.
+          </p>
+          <p>
+            Por lo pronto quiero que sepas que me siento súper orgulloso
+            de ti, eres una persona admirable. Que este viaje te sirva
+            para seguir creciendo en lo que amas. ¡Disfrútalo!
+          </p>
+          <p>Hoy es el inicio de esta aventura.</p>
+          <p className="pareja-message-signoff">Te amo, preciosa 💜</p>
+        </div>
       </div>
     </div>
   )
