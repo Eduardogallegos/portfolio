@@ -16,7 +16,7 @@
   margin: 0 auto;
   padding: 16px 20px;
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-end;
   align-items: center;
 }
 

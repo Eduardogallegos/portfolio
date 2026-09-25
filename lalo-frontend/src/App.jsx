@@ -16,7 +16,6 @@ function ParejaSection() {
     <div className="app">
       <nav className="navbar">
         <div className="navbar-content">
-          <h2>💕 Date Booking App</h2>
           <div className="user-menu">
             <span className="user-email">{user?.email}</span>
             <button onClick={logout} className="btn-secondary">
