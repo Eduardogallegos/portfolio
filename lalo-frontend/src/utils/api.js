@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-const API_BASE_URL = process.env.REACT_APP_API_URL || 'https://portfolio-production-4e38.up.railway.app'
+const API_BASE_URL = process.env.VITE_API_URL || 'https://api.egallegos.me'
 
 const api = axios.create({
   baseURL: API_BASE_URL,
