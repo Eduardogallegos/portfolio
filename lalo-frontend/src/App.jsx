@@ -3,7 +3,6 @@ import { useAuth } from './hooks/useAuth'
 import { Landing } from './pages/Landing'
 import { TreasureHunt } from './pages/TreasureHunt'
 import { Login } from './components/Login'
-import { DateBooking } from './components/DateBooking'
 import './App.css'
 
 function ParejaSection() {
@@ -27,7 +26,14 @@ function ParejaSection() {
         </div>
       </nav>
 
-      <DateBooking />
+      <div className="wip-placeholder">
+        <img
+          src="/work-in-progress.jpg"
+          alt="En construcción"
+          className="wip-placeholder-img"
+        />
+        <p>Esta sección sigue en construcción 🚧</p>
+      </div>
     </div>
   )
 }

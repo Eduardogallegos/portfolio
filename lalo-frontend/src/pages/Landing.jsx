@@ -3,11 +3,6 @@ import './Landing.css'
 
 export const Landing = () => (
   <main className="landing">
-    <img
-      src="/work-in-progress.jpg"
-      alt="Sitio en construcción"
-      className="landing-img"
-    />
     <div className="landing-content">
       <h1>Portafolio Eduardo</h1>
       <p>Tutoriales y experimentos — en construcción</p>
