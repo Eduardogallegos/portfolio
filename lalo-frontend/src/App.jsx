@@ -1,18 +1,15 @@
-import { useState } from 'react'
+import { Routes, Route, Navigate } from 'react-router-dom'
 import { useAuth } from './hooks/useAuth'
+import { Landing } from './pages/Landing'
 import { Login } from './components/Login'
 import { DateBooking } from './components/DateBooking'
 import './App.css'
 
-function App() {
+function ParejaSection() {
   const { user, logout, isAuthenticated } = useAuth()
 
   if (!isAuthenticated) {
-    return (
-      <div className="app">
-        <Login onSuccess={() => {}} />
-      </div>
-    )
+    return <Navigate to="/pareja/login" replace />
   }
 
   return (
@@ -31,6 +28,31 @@ function App() {
 
       <DateBooking />
     </div>
+  )
+}
+
+function LoginRoute() {
+  const { isAuthenticated } = useAuth()
+
+  if (isAuthenticated) {
+    return <Navigate to="/pareja" replace />
+  }
+
+  return (
+    <div className="app">
+      <Login onSuccess={() => {}} />
+    </div>
+  )
+}
+
+function App() {
+  return (
+    <Routes>
+      <Route path="/" element={<Landing />} />
+      <Route path="/pareja/login" element={<LoginRoute />} />
+      <Route path="/pareja" element={<ParejaSection />} />
+      <Route path="*" element={<Navigate to="/" replace />} />
+    </Routes>
   )
 }
 

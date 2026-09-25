@@ -1,24 +1,19 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { authAPI } from '../utils/api'
 
 export const useAuth = () => {
-  const [user, setUser] = useState(null)
-  const [loading, setLoading] = useState(false)
-  const [error, setError] = useState(null)
-
-  useEffect(() => {
-    const token = localStorage.getItem('access_token')
-    const userData = localStorage.getItem('user')
-    if (token && userData) {
-      try {
-        setUser(JSON.parse(userData))
-      } catch (e) {
-        console.error('Error parsing user data:', e)
-        localStorage.removeItem('access_token')
-        localStorage.removeItem('user')
-      }
+  const [user, setUser] = useState(() => {
+    try {
+      const token = localStorage.getItem('access_token')
+      const userData = localStorage.getItem('user')
+      return token && userData ? JSON.parse(userData) : null
+    } catch (e) {
+      console.error('Error parsing user data:', e)
+      localStorage.removeItem('access_token')
+      localStorage.removeItem('user')
+      return null
     }
-  }, [])
+  })
 
   const register = async (email, password, role) => {
     setLoading(true)
@@ -51,8 +46,8 @@ export const useAuth = () => {
       localStorage.setItem('user', JSON.stringify(user))
       setUser(user)
       
-      // Forzar actualización del estado
-      window.location.reload()
+      // Recargar en la sección protegida para que todo lea la nueva sesión
+      window.location.href = '/pareja'
       
       return response.data
     } catch (err) {
@@ -69,7 +64,7 @@ export const useAuth = () => {
     localStorage.removeItem('access_token')
     localStorage.removeItem('user')
     setUser(null)
-    window.location.reload()
+    window.location.href = '/'
   }
 
   return {
