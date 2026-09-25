@@ -16,7 +16,7 @@ export const TreasureHunt = () => {
     e.preventDefault()
 
     if (birthday === BIRTHDAY && anniversary === ANNIVERSARY) {
-      sessionStorage.setItem('hunt_passed', 'true')
+      localStorage.setItem('hunt_passed', 'true')
       navigate('/pareja/login')
       return
     }

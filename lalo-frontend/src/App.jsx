@@ -1,6 +1,8 @@
 import { Routes, Route, Navigate } from 'react-router-dom'
 import { useAuth } from './hooks/useAuth'
 import { Landing } from './pages/Landing'
+import { Blog } from './pages/Blog'
+import { BlogPost } from './pages/BlogPost'
 import { TreasureHunt } from './pages/TreasureHunt'
 import { Login } from './components/Login'
 import './App.css'
@@ -54,7 +56,7 @@ function ParejaSection() {
 
 function LoginRoute() {
   const { isAuthenticated } = useAuth()
-  const huntPassed = sessionStorage.getItem('hunt_passed') === 'true'
+  const huntPassed = localStorage.getItem('hunt_passed') === 'true'
 
   if (isAuthenticated) {
     return <Navigate to="/pareja" replace />
@@ -75,6 +77,8 @@ function App() {
   return (
     <Routes>
       <Route path="/" element={<Landing />} />
+      <Route path="/blog" element={<Blog />} />
+      <Route path="/blog/:slug" element={<BlogPost />} />
       <Route path="/pareja/enigma" element={<TreasureHunt />} />
       <Route path="/pareja/login" element={<LoginRoute />} />
       <Route path="/pareja" element={<ParejaSection />} />
