@@ -1,0 +1,20 @@
+.hunt-card {
+  text-align: center;
+}
+
+.hunt-subtitle {
+  color: #666;
+  font-size: 14px;
+  margin-top: -18px;
+  margin-bottom: 24px;
+}
+
+.hunt-label {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  text-align: left;
+  font-size: 14px;
+  font-weight: 600;
+  color: #444;
+}
