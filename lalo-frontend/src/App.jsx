@@ -16,8 +16,8 @@ function ParejaSection() {
   }
 
   return (
-    <div className="app pareja-bg">
-      <nav className="navbar navbar-dark">
+    <div className="app">
+      <nav className="navbar">
         <div className="navbar-content">
           <div className="user-menu">
             <span className="user-email">{user?.email}</span>
@@ -28,7 +28,14 @@ function ParejaSection() {
         </div>
       </nav>
 
-      <div className="pareja-wrap">
+      <div className="wip-placeholder">
+        <img
+          src="/work-in-progress.jpg"
+          alt="En construcción"
+          className="wip-placeholder-img"
+        />
+        <p>Esta sección sigue en construcción 🚧</p>
+
         <div className="pareja-message">
           <p>
             Hace mucho te prometí construir algo así (apenas estábamos saliendo)
@@ -44,9 +51,13 @@ function ParejaSection() {
           <p>Hoy es el inicio de esta aventura.</p>
           <p className="pareja-message-signoff">Te amo, preciosa 💜</p>
         </div>
-
-        <ReadWhen />
       </div>
+
+      <div className="pareja-divider">
+          <span>💌</span>
+        </div>
+
+      <ReadWhen />
     </div>
   )
 }
