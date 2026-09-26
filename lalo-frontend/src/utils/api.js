@@ -49,3 +49,7 @@ export const bookingsAPI = {
 }
 
 export default api
+// Messages API
+export const messagesAPI = {
+  getByCategory: (category) => api.get(`/api/messages/${category}`),
+}

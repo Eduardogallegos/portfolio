@@ -5,6 +5,7 @@ import { Blog } from './pages/Blog'
 import { BlogPost } from './pages/BlogPost'
 import { TreasureHunt } from './pages/TreasureHunt'
 import { Login } from './components/Login'
+import { ReadWhen } from './pages/ReadWhen'
 import './App.css'
 
 function ParejaSection() {
@@ -15,8 +16,8 @@ function ParejaSection() {
   }
 
   return (
-    <div className="app">
-      <nav className="navbar">
+    <div className="app pareja-bg">
+      <nav className="navbar navbar-dark">
         <div className="navbar-content">
           <div className="user-menu">
             <span className="user-email">{user?.email}</span>
@@ -27,17 +28,10 @@ function ParejaSection() {
         </div>
       </nav>
 
-      <div className="wip-placeholder">
-        <img
-          src="/work-in-progress.jpg"
-          alt="En construcción"
-          className="wip-placeholder-img"
-        />
-        <p>Esta sección sigue en construcción 🚧</p>
-
+      <div className="pareja-wrap">
         <div className="pareja-message">
           <p>
-            Hace mucho te prometí construir algo así (apenas estábamos saliendo) 
+            Hace mucho te prometí construir algo así (apenas estábamos saliendo)
             y he estado trabajando en esto desde entonces, pero por
             varios motivos lo había puesto en pausa. Poco a poco le iré
             agregando cositas (sorry, tiene bugs y cosas que iré arreglando)
@@ -50,6 +44,8 @@ function ParejaSection() {
           <p>Hoy es el inicio de esta aventura.</p>
           <p className="pareja-message-signoff">Te amo, preciosa 💜</p>
         </div>
+
+        <ReadWhen />
       </div>
     </div>
   )

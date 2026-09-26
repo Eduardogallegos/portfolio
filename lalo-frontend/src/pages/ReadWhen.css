@@ -1,0 +1,158 @@
+/* ── Sección principal ─────────────────────────────── */
+.read-when {
+  padding: 48px 20px 64px;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.read-when-title {
+  text-align: center;
+  font-size: 22px;
+  font-weight: 600;
+  color: #f5f5f5;
+  margin-bottom: 32px;
+  letter-spacing: -0.01em;
+}
+
+/* ── Grid de categorías ────────────────────────────── */
+.read-when-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+}
+
+.rw-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 24px 12px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 14px;
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s, transform 0.2s;
+  color: inherit;
+}
+
+.rw-card:hover {
+  background: rgba(167, 139, 250, 0.12);
+  border-color: rgba(167, 139, 250, 0.35);
+  transform: translateY(-2px);
+}
+
+.rw-card:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.rw-card-emoji {
+  font-size: 32px;
+  line-height: 1;
+}
+
+.rw-card-label {
+  font-size: 12px;
+  color: #a3a3a3;
+  text-align: center;
+  line-height: 1.4;
+}
+
+/* ── Overlay / Modal ───────────────────────────────── */
+.rw-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 200;
+  padding: 20px;
+}
+
+.rw-modal {
+  position: relative;
+  background: #111;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
+  padding: 40px 32px 32px;
+  max-width: 440px;
+  width: 100%;
+  text-align: center;
+  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.6);
+}
+
+.rw-close {
+  position: absolute;
+  top: 14px;
+  right: 18px;
+  background: none;
+  border: none;
+  color: #666;
+  font-size: 24px;
+  cursor: pointer;
+  line-height: 1;
+  padding: 4px;
+  transition: color 0.2s;
+}
+
+.rw-close:hover {
+  color: #f5f5f5;
+}
+
+.rw-image {
+  width: 100%;
+  max-height: 220px;
+  object-fit: cover;
+  border-radius: 12px;
+  margin-bottom: 24px;
+}
+
+.rw-content {
+  font-size: 18px;
+  line-height: 1.65;
+  color: #f0f0f0;
+  margin-bottom: 28px;
+  white-space: pre-wrap;
+}
+
+.rw-otro {
+  background: rgba(167, 139, 250, 0.12);
+  border: 1px solid rgba(167, 139, 250, 0.3);
+  color: #c4b5fd;
+  padding: 10px 24px;
+  border-radius: 8px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s;
+}
+
+.rw-otro:hover {
+  background: rgba(167, 139, 250, 0.22);
+  border-color: rgba(167, 139, 250, 0.5);
+}
+
+.rw-loading,
+.rw-empty,
+.rw-error {
+  color: #a3a3a3;
+  font-size: 15px;
+  padding: 20px 0;
+}
+
+.rw-error {
+  color: #f87171;
+}
+
+/* ── Mobile ────────────────────────────────────────── */
+@media (max-width: 480px) {
+  .read-when-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .rw-content {
+    font-size: 16px;
+  }
+}
