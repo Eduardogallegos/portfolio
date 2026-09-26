@@ -43,3 +43,15 @@ class Booking(Base):
     # Relaciones
     plan = relationship("Plan", back_populates="bookings")
     creator = relationship("User", back_populates="bookings")
+
+
+VALID_CATEGORIES = {"sola", "triste", "nos-extranas", "riete", "empujon", "sorpresa"}
+
+class Message(Base):
+    __tablename__ = "messages"
+
+    id = Column(Integer, primary_key=True, index=True)
+    category = Column(String, nullable=False, index=True)  # sola | triste | nos-extranas | riete | empujon | sorpresa
+    content = Column(String, nullable=False)
+    image_path = Column(String, nullable=True)  # path dentro del bucket, ej: "sola/foto1.jpg"
+    created_at = Column(DateTime, default=datetime.utcnow)

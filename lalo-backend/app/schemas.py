@@ -70,3 +70,16 @@ class Token(BaseModel):
     access_token: str
     token_type: str
     user: UserResponse
+
+
+# ===== MESSAGE SCHEMAS =====
+
+class MessageResponse(BaseModel):
+    id: int
+    category: str
+    content: str
+    image_url: Optional[str] = None  # signed URL generada al momento, null si no hay imagen
+    created_at: datetime
+
+    class Config:
+        from_attributes = True
