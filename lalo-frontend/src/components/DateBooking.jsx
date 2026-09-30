@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { usePlans } from "../hooks/usePlans";
+import { bookingsAPI } from "../utils/api";
 import { useBookings } from "../hooks/useBookings";
 import { useAuth } from "../hooks/useAuth";
 import { Calendar } from "./Calendar";
@@ -11,6 +12,7 @@ export const DateBooking = () => {
   const {
     bookings,
     createBooking,
+    deleteBooking,
     loading: bookingLoading,
     error,
   } = useBookings();
@@ -47,17 +49,8 @@ export const DateBooking = () => {
 
   const downloadICalendar = async () => {
     try {
-      const response = await fetch(
-        "http://localhost:8000/bookings/export/ical",
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("access_token")}`,
-          },
-        },
-      );
-
-      const blob = await response.blob();
-      const url = window.URL.createObjectURL(blob);
+      const response = await bookingsAPI.exportIcal();
+      const url = window.URL.createObjectURL(new Blob([response.data]));
       const a = document.createElement("a");
       a.href = url;
       a.download = "dates.ics";
@@ -73,28 +66,25 @@ export const DateBooking = () => {
 
   const openGoogleCalendar = async () => {
     try {
-      const response = await fetch(
-        "http://localhost:8000/bookings/export/google-calendar",
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("access_token")}`,
-          },
-        },
-      );
-
-      const data = await response.json();
-
+      const response = await bookingsAPI.exportGoogleCalendar();
+      const data = response.data;
       if (data.events.length === 0) {
         alert("No hay dates para agregar");
         return;
       }
-
-      // Abrir el primer evento en Google Calendar
-      // (en la práctica, podrías crear una página para elegir cuál abrir)
       window.open(data.events[0].google_url, "_blank");
     } catch (err) {
       console.error("Error opening Google Calendar:", err);
       alert("Error al abrir Google Calendar");
+    }
+  };
+
+  const handleCancelBooking = async (bookingId) => {
+    if (!window.confirm("¿Segura que quieres cancelar este date? 💔")) return;
+    try {
+      await deleteBooking(bookingId);
+    } catch (err) {
+      // Error manejado por el hook
     }
   };
 
@@ -155,6 +145,7 @@ export const DateBooking = () => {
             <Calendar
               onDateSelect={setSelectedDate}
               selectedDate={selectedDate}
+              bookedDates={bookings.map(b => b.fecha)}
             />
           </div>
         )}
@@ -244,9 +235,17 @@ export const DateBooking = () => {
               {bookings.map((booking) => (
                 <div key={booking.id} className="booking-item">
                   <h4>{booking.plan.nombre}</h4>
-                  <p>📅 {new Date(booking.fecha).toLocaleDateString()}</p>
+                  <p>📅 {new Date(booking.fecha).toLocaleDateString("es", { weekday: "long", year: "numeric", month: "long", day: "numeric" })}</p>
                   <p>⏰ {booking.hora_inicio}</p>
                   <p className="description">{booking.plan.descripcion}</p>
+                  {user?.role === "mariana" && (
+                    <button
+                      className="btn-cancel"
+                      onClick={() => handleCancelBooking(booking.id)}
+                    >
+                      ✕ Cancelar date
+                    </button>
+                  )}
                 </div>
               ))}
             </div>

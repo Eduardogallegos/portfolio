@@ -46,6 +46,9 @@ export const bookingsAPI = {
   create: (plan_id, fecha, hora_inicio) =>
     api.post('/bookings', { plan_id, fecha, hora_inicio }),
   getById: (id) => api.get(`/bookings/${id}`),
+  delete: (id) => api.delete(`/bookings/${id}`),
+  exportIcal: () => api.get('/bookings/export/ical', { responseType: 'blob' }),
+  exportGoogleCalendar: () => api.get('/bookings/export/google-calendar'),
 }
 
 export default api
