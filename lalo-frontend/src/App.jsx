@@ -78,6 +78,10 @@ function ParejaSection() {
 
       <div className="pareja-divider"><span>💕</span></div>
 
+      <Countdown />
+
+      <div className="pareja-divider"><span>🌙</span></div>
+
       <DateBooking />
     </div>
   )

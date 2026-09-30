@@ -54,6 +54,7 @@ export const Countdown = () => {
         ))}
       </div>
       <p className="countdown-date">para verte de nuevo 🏠</p>
+      <p className="countdown-date">Disfruta tu viaje!</p>
     </div>
   )
 }

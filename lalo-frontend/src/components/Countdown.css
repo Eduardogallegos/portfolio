@@ -7,7 +7,7 @@
 
 .countdown-title {
   font-size: 13px;
-  color: #a0a0b0;
+  color: rgba(255, 255, 255, 0.75);
   letter-spacing: 0.08em;
   text-transform: uppercase;
   margin: 0 0 16px;
@@ -45,7 +45,7 @@
 
 .countdown-label {
   font-size: 11px;
-  color: #9090a8;
+  color: rgba(255, 255, 255, 0.6);
   margin-top: 4px;
   text-transform: lowercase;
   letter-spacing: 0.05em;
@@ -53,7 +53,7 @@
 
 .countdown-date {
   font-size: 13px;
-  color: #9090a8;
+  color: rgba(255, 255, 255, 0.6);
   margin: 14px 0 0;
 }
 
