@@ -6,7 +6,7 @@ from typing import Optional
 
 class UserBase(BaseModel):
     email: EmailStr
-    role: str  # "lalo" o "mariana"
+    role: str
 
 class UserCreate(UserBase):
     password: str
@@ -50,7 +50,7 @@ class PlanResponse(PlanBase):
 class BookingBase(BaseModel):
     plan_id: int
     fecha: datetime
-    hora_inicio: str  # Formato "HH:MM"
+    hora_inicio: str
 
 class BookingCreate(BookingBase):
     pass
@@ -59,7 +59,7 @@ class BookingResponse(BookingBase):
     id: int
     creado_por: int
     created_at: datetime
-    plan: PlanResponse  # Incluir info del plan
+    plan: PlanResponse
     
     class Config:
         from_attributes = True
@@ -71,14 +71,35 @@ class Token(BaseModel):
     token_type: str
     user: UserResponse
 
-
 # ===== MESSAGE SCHEMAS =====
 
 class MessageResponse(BaseModel):
     id: int
     category: str
     content: str
-    image_url: Optional[str] = None  # signed URL generada al momento, null si no hay imagen
+    image_url: Optional[str] = None
+    created_at: datetime
+
+    class Config:
+        from_attributes = True
+
+# ===== ALBUM SCHEMAS =====
+
+class AlbumEntryCreate(BaseModel):
+    type: str          # "mensaje" | "foto"
+    title: str
+    content: Optional[str] = None
+    date_label: Optional[str] = None
+    image_url: Optional[str] = None   # para URLs directas (entries legacy)
+
+class AlbumEntryResponse(BaseModel):
+    id: int
+    type: str
+    title: str
+    content: Optional[str] = None
+    image_url: Optional[str] = None   # signed URL o URL directa ya resuelta
+    date_label: Optional[str] = None
+    created_by_role: str              # "lalo" | "mariana"
     created_at: datetime
 
     class Config:

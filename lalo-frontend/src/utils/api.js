@@ -56,3 +56,14 @@ export default api
 export const messagesAPI = {
   getByCategory: (category) => api.get(`/api/messages/${category}`),
 }
+
+// Album API
+export const albumAPI = {
+  getAll: () => api.get('/api/album'),
+  create: (body) => api.post('/api/album', body),
+  uploadPhoto: (formData) =>
+    api.post('/api/album/upload', formData, {
+      headers: { 'Content-Type': 'multipart/form-data' },
+    }),
+  delete: (id) => api.delete(`/api/album/${id}`),
+}

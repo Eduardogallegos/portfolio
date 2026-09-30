@@ -4,8 +4,9 @@
 }
 
 .navbar {
-  background: white;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  background: rgba(60, 50, 100, 0.85);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(8px);
   position: sticky;
   top: 0;
   z-index: 100;
@@ -14,9 +15,9 @@
 .navbar-content {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 16px 20px;
+  padding: 12px 24px;
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
   align-items: center;
 }
 
@@ -33,12 +34,12 @@
 }
 
 .user-email {
-  color: #666;
+  color: rgba(255,255,255,0.5);
   font-size: 14px;
 }
 
 .btn-secondary {
-  background: #f0f0f0;
+  background: rgba(255,255,255,0.07);
   color: #333;
   padding: 8px 16px;
   border-radius: 6px;
@@ -49,7 +50,8 @@
 }
 
 .btn-secondary:hover {
-  background: #e0e0e0;
+  background: rgba(255,255,255,0.13);
+  color: #fff;
 }
 
 .auth-toggle {
@@ -57,7 +59,7 @@
   bottom: 20px;
   left: 50%;
   transform: translateX(-50%);
-  background: white;
+  background: rgba(60, 50, 100, 0.85);
   padding: 16px 24px;
   border-radius: 12px;
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
@@ -67,7 +69,7 @@
 .auth-toggle p {
   margin: 0;
   font-size: 14px;
-  color: #666;
+  color: rgba(255,255,255,0.5);
 }
 
 .link-btn {
@@ -122,7 +124,7 @@
 }
 
 .pareja-message {
-  background: white;
+  background: rgba(60, 50, 100, 0.85);
   border-radius: 16px;
   padding: 28px 24px;
   margin-top: 32px;
@@ -172,4 +174,102 @@
 .pareja-divider span {
   font-size: 16px;
   opacity: 0.6;
+}
+
+/* ── Navbar pareja links ─────────────────────────────────────────── */
+.pareja-nav-links {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.album-nav-link {
+  color: #f0c040;
+  font-size: 14px;
+  font-weight: 500;
+  text-decoration: none;
+  padding: 6px 16px;
+  border-radius: 6px;
+  border: 1px solid rgba(240, 192, 64, 0.5);
+  background: rgba(240, 192, 64, 0.12);
+  transition: background 0.2s, color 0.2s, border-color 0.2s;
+  letter-spacing: 0.01em;
+}
+
+.album-nav-link:hover {
+  background: rgba(212, 160, 23, 0.18);
+  color: #f0c040;
+}
+
+/* ── Mensaje de aniversario ─────────────────────────────────────── */
+.aniversario-section {
+  padding: 48px 20px 52px;
+}
+
+.aniversario-card {
+  max-width: 600px;
+  margin: 0 auto;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 20px;
+  padding: 40px 40px 32px;
+  position: relative;
+  text-align: center;
+  backdrop-filter: blur(12px);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+}
+
+.aniversario-flowers {
+  font-size: 36px;
+  margin-bottom: 8px;
+  display: block;
+  animation: flower-sway 4s ease-in-out infinite;
+  transform-origin: bottom center;
+}
+
+@keyframes flower-sway {
+  0%, 100% { transform: rotate(-4deg) scale(1); }
+  50%       { transform: rotate(4deg) scale(1.08); }
+}
+
+.aniversario-label {
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  color: rgba(212, 160, 23, 0.7);
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+
+.aniversario-title {
+  font-size: 26px;
+  font-weight: 700;
+  color: #f0c040;
+  margin-bottom: 28px;
+  letter-spacing: -0.01em;
+}
+
+.aniversario-body {
+  text-align: left;
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 15px;
+  line-height: 1.75;
+}
+
+.aniversario-body p {
+  margin-bottom: 18px;
+}
+
+.aniversario-body p:last-child {
+  margin-bottom: 0;
+}
+
+.aniversario-signoff {
+  margin-top: 28px;
+  color: #f0c040;
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+.aniversario-signoff em {
+  font-style: italic;
 }

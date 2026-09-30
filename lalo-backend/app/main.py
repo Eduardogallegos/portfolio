@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.config import settings
-from app.routes import auth, planes, bookings, messages
+from app.routes import auth, planes, bookings, messages, album
 
 # Crear app FastAPI
 app = FastAPI(
@@ -27,6 +27,7 @@ app.include_router(auth.router)
 app.include_router(planes.router)
 app.include_router(bookings.router)
 app.include_router(messages.router)
+app.include_router(album.router)
 
 @app.get("/")
 async def root():

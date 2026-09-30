@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 """Script para crear las tablas en la base de datos"""
 
-from app.models import User, Plan, Booking, Message
+from app.models import User, Plan, Booking, Message, AlbumEntry
 from app.database import Base, engine
 from sqlalchemy import inspect
 
