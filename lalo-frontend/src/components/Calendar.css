@@ -95,3 +95,74 @@
   border-color: #667eea;
   font-weight: 700;
 }
+
+/* Días pasados */
+.calendar-day.disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+  background: #f5f5f5;
+  border-color: #e0e0e0;
+  color: #aaa;
+}
+.calendar-day.disabled:hover {
+  background: #f5f5f5;
+  border-color: #e0e0e0;
+}
+
+/* Hoy */
+.calendar-day.today {
+  border: 2px solid #667eea;
+  font-weight: 700;
+  color: #667eea;
+}
+.calendar-day.today.selected {
+  color: white;
+}
+
+/* Días con booking */
+.calendar-day.booked {
+  position: relative;
+  background: #fff0f5;
+  border-color: #e91e8c;
+  color: #333;
+}
+.calendar-day.booked:hover {
+  background: #ffe0ef;
+}
+.calendar-day.booked.selected {
+  background: linear-gradient(135deg, #e91e8c 0%, #764ba2 100%);
+  color: white;
+}
+
+.booked-dot {
+  position: absolute;
+  bottom: 3px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 16px;
+  color: #e91e8c;
+  line-height: 1;
+}
+.calendar-day.selected .booked-dot {
+  color: rgba(255,255,255,0.8);
+}
+
+/* Leyenda */
+.calendar-legend {
+  display: flex;
+  gap: 16px;
+  margin-top: 12px;
+  font-size: 12px;
+  color: #888;
+}
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.dot {
+  font-size: 14px;
+}
+.today-dot {
+  color: #667eea;
+}

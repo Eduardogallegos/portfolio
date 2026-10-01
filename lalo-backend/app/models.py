@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, DateTime, ForeignKey, Boolean
+from sqlalchemy import Column, Integer, String, DateTime, ForeignKey, Boolean, Text
 from sqlalchemy.orm import relationship
 from datetime import datetime
 from app.database import Base
@@ -14,6 +14,7 @@ class User(Base):
     
     # Relaciones
     bookings = relationship("Booking", back_populates="creator")
+    album_entries = relationship("AlbumEntry", back_populates="created_by")
 
 
 class Plan(Base):
@@ -23,6 +24,7 @@ class Plan(Base):
     nombre = Column(String, nullable=False)
     descripcion = Column(String, nullable=False)
     duracion_minutos = Column(Integer, nullable=False)
+    link = Column(String, nullable=True)  # URL de referencia (TikTok, IG Reels, etc.)
     created_at = Column(DateTime, default=datetime.utcnow)
     updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
     
@@ -43,3 +45,33 @@ class Booking(Base):
     # Relaciones
     plan = relationship("Plan", back_populates="bookings")
     creator = relationship("User", back_populates="bookings")
+
+
+VALID_CATEGORIES = {"sola", "triste", "nos-extranas", "riete", "empujon", "sorpresa"}
+
+class Message(Base):
+    __tablename__ = "messages"
+
+    id = Column(Integer, primary_key=True, index=True)
+    category = Column(String, nullable=False, index=True)
+    content = Column(String, nullable=False)
+    image_path = Column(String, nullable=True)
+    created_at = Column(DateTime, default=datetime.utcnow)
+
+
+VALID_ALBUM_TYPES = {"mensaje", "foto"}
+
+class AlbumEntry(Base):
+    __tablename__ = "album_entries"
+
+    id = Column(Integer, primary_key=True, index=True)
+    type = Column(String, nullable=False)          # "mensaje" | "foto"
+    title = Column(String, nullable=False)
+    content = Column(Text, nullable=True)           # texto del mensaje
+    image_path = Column(String, nullable=True)      # path en Supabase Storage  e.g. "album/uuid.jpg"
+    image_url = Column(String, nullable=True)       # URL directa para entries legacy
+    date_label = Column(String, nullable=True)      # e.g. "Agosto 2026", "2 meses"
+    created_by_id = Column(Integer, ForeignKey("users.id"), nullable=False)
+    created_at = Column(DateTime, default=datetime.utcnow)
+
+    created_by = relationship("User", back_populates="album_entries")

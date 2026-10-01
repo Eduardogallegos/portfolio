@@ -46,6 +46,24 @@ export const bookingsAPI = {
   create: (plan_id, fecha, hora_inicio) =>
     api.post('/bookings', { plan_id, fecha, hora_inicio }),
   getById: (id) => api.get(`/bookings/${id}`),
+  delete: (id) => api.delete(`/bookings/${id}`),
+  exportIcal: () => api.get('/bookings/export/ical', { responseType: 'blob' }),
+  exportGoogleCalendar: () => api.get('/bookings/export/google-calendar'),
 }
 
 export default api
+// Messages API
+export const messagesAPI = {
+  getByCategory: (category) => api.get(`/api/messages/${category}`),
+}
+
+// Album API
+export const albumAPI = {
+  getAll: () => api.get('/api/album'),
+  create: (body) => api.post('/api/album', body),
+  uploadPhoto: (formData) =>
+    api.post('/api/album/upload', formData, {
+      headers: { 'Content-Type': 'multipart/form-data' },
+    }),
+  delete: (id) => api.delete(`/api/album/${id}`),
+}

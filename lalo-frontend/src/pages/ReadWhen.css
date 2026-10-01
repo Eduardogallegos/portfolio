@@ -1,0 +1,162 @@
+/* ── Sección principal ─────────────────────────────── */
+.read-when {
+  padding: 8px 20px 64px;
+  max-width: 560px;
+  margin: 0 auto;
+}
+
+.read-when-title {
+  text-align: center;
+  font-size: 20px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.9);
+  margin-bottom: 20px;
+  letter-spacing: -0.01em;
+}
+
+/* ── Grid de categorías ────────────────────────────── */
+.read-when-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+
+.rw-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 20px 10px;
+  background: rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: 14px;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
+  color: inherit;
+  backdrop-filter: blur(4px);
+}
+
+.rw-card:hover {
+  background: rgba(255, 255, 255, 0.25);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+}
+
+.rw-card:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.rw-card-emoji {
+  font-size: 28px;
+  line-height: 1;
+}
+
+.rw-card-label {
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.85);
+  text-align: center;
+  line-height: 1.4;
+}
+
+/* ── Overlay / Modal ───────────────────────────────── */
+.rw-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 200;
+  padding: 20px;
+}
+
+.rw-modal {
+  position: relative;
+  background: white;
+  border-radius: 20px;
+  padding: 40px 32px 32px;
+  max-width: 440px;
+  width: 100%;
+  text-align: center;
+  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.3);
+}
+
+.rw-close {
+  position: absolute;
+  top: 14px;
+  right: 18px;
+  background: none;
+  border: none;
+  color: #aaa;
+  font-size: 24px;
+  cursor: pointer;
+  line-height: 1;
+  padding: 4px;
+  transition: color 0.2s;
+  box-shadow: none;
+}
+
+.rw-close:hover {
+  color: #333;
+  transform: none;
+  box-shadow: none;
+}
+
+.rw-image {
+  width: 100%;
+  max-height: 360px;
+  object-fit: cover;
+  border-radius: 12px;
+  margin-bottom: 24px;
+  display: block;
+}
+
+.rw-content {
+  font-size: 17px;
+  line-height: 1.65;
+  color: #333;
+  margin-bottom: 28px;
+  white-space: pre-wrap;
+}
+
+.rw-otro {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border: none;
+  color: white;
+  padding: 10px 24px;
+  border-radius: 8px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: opacity 0.2s, transform 0.2s;
+}
+
+.rw-otro:hover {
+  opacity: 0.88;
+}
+
+.rw-loading,
+.rw-empty {
+  color: #888;
+  font-size: 15px;
+  padding: 20px 0;
+}
+
+.rw-error {
+  color: #c33;
+  font-size: 15px;
+  padding: 20px 0;
+}
+
+/* ── Mobile ────────────────────────────────────────── */
+@media (max-width: 480px) {
+  .read-when-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .rw-content {
+    font-size: 16px;
+  }
+}

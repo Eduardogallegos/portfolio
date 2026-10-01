@@ -159,3 +159,27 @@ async def google_calendar_link(
         })
     
     return {"events": events}
+
+@router.delete("/{booking_id}", status_code=status.HTTP_204_NO_CONTENT)
+async def delete_booking(
+    booking_id: int,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user)
+):
+    """Cancelar un date (solo mariana puede)"""
+    
+    if current_user.role != "mariana":
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Solo mariana puede cancelar dates"
+        )
+    
+    booking = db.query(Booking).filter(Booking.id == booking_id).first()
+    if not booking:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Booking no encontrado"
+        )
+    
+    db.delete(booking)
+    db.commit()

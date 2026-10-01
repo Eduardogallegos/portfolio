@@ -38,11 +38,26 @@ export const useBookings = () => {
     }
   }
 
+  const deleteBooking = async (id) => {
+    setLoading(true)
+    setError(null)
+    try {
+      await bookingsAPI.delete(id)
+      setBookings(bookings.filter(b => b.id !== id))
+    } catch (err) {
+      setError(err.response?.data?.detail || 'Error cancelando booking')
+      throw err
+    } finally {
+      setLoading(false)
+    }
+  }
+
   return {
     bookings,
     loading,
     error,
     fetchBookings,
     createBooking,
+    deleteBooking,
   }
 }
