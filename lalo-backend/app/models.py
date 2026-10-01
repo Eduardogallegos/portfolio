@@ -24,6 +24,7 @@ class Plan(Base):
     nombre = Column(String, nullable=False)
     descripcion = Column(String, nullable=False)
     duracion_minutos = Column(Integer, nullable=False)
+    link = Column(String, nullable=True)  # URL de referencia (TikTok, IG Reels, etc.)
     created_at = Column(DateTime, default=datetime.utcnow)
     updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
     

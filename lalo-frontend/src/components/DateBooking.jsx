@@ -132,6 +132,11 @@ export const DateBooking = () => {
                   <h3>{plan.nombre}</h3>
                   <p>{plan.descripcion}</p>
                   <p className="duration">⏱️ {plan.duracion_minutos} minutos</p>
+                  {plan.link && (
+                    <a href={plan.link} target="_blank" rel="noopener noreferrer" className="plan-link">
+                      🎬 Ver referencia
+                    </a>
+                  )}
                 </div>
               ))}
             </div>
@@ -235,6 +240,11 @@ export const DateBooking = () => {
               {bookings.map((booking) => (
                 <div key={booking.id} className="booking-item">
                   <h4>{booking.plan.nombre}</h4>
+                  {booking.plan.link && (
+                    <a href={booking.plan.link} target="_blank" rel="noopener noreferrer" className="plan-link">
+                      🎬 Ver referencia
+                    </a>
+                  )}
                   <p>📅 {new Date(booking.fecha).toLocaleDateString("es", { weekday: "long", year: "numeric", month: "long", day: "numeric" })}</p>
                   <p>⏰ {booking.hora_inicio}</p>
                   <p className="description">{booking.plan.descripcion}</p>

@@ -28,6 +28,7 @@ class PlanBase(BaseModel):
     nombre: str
     descripcion: str
     duracion_minutos: int
+    link: Optional[str] = None
 
 class PlanCreate(PlanBase):
     pass
@@ -36,6 +37,7 @@ class PlanUpdate(BaseModel):
     nombre: Optional[str] = None
     descripcion: Optional[str] = None
     duracion_minutos: Optional[int] = None
+    link: Optional[str] = None
 
 class PlanResponse(PlanBase):
     id: int

@@ -36,7 +36,8 @@ async def create_plan(
     new_plan = Plan(
         nombre=plan_data.nombre,
         descripcion=plan_data.descripcion,
-        duracion_minutos=plan_data.duracion_minutos
+        duracion_minutos=plan_data.duracion_minutos,
+        link=plan_data.link,
     )
     
     db.add(new_plan)
@@ -76,6 +77,8 @@ async def update_plan(
         plan.descripcion = plan_data.descripcion
     if plan_data.duracion_minutos is not None:
         plan.duracion_minutos = plan_data.duracion_minutos
+    if plan_data.link is not None:
+        plan.link = plan_data.link
     
     db.commit()
     db.refresh(plan)
