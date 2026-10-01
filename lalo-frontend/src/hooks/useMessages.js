@@ -2,33 +2,43 @@ import { useState } from 'react'
 import { messagesAPI } from '../utils/api'
 
 export const useMessages = () => {
-  const [messages, setMessages] = useState([])   // mensajes de la categoría activa
+  // Guardamos mensajes por categoría para no perderlos al cambiar
+  const [messagesByCategory, setMessagesByCategory] = useState({})
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(null)
-  // seen: { [category]: Set<id> } — persiste mientras no recargue
+  // seen: { [category]: Set<id> }
   const [seen, setSeen] = useState({})
 
+  // Retorna los mensajes ya cargados de una categoría (o array vacío)
+  const getMessages = (category) => messagesByCategory[category] ?? []
+
+  // Hace fetch y retorna los mensajes directamente (sin depender del estado)
   const fetchCategory = async (category) => {
     setLoading(true)
     setError(null)
     try {
       const res = await messagesAPI.getByCategory(category)
-      setMessages(res.data)
+      const data = res.data
+      setMessagesByCategory((prev) => ({ ...prev, [category]: data }))
+      return data
     } catch (err) {
       setError(err.response?.data?.detail || 'Error cargando mensajes')
+      return []
     } finally {
       setLoading(false)
     }
   }
 
-  // Devuelve un mensaje no visto de la lista actual. Si los agotó, reinicia.
-  const pickUnseen = (category) => {
+  // Devuelve un mensaje no visto de la categoría. Acepta la lista directamente
+  // para evitar leer state obsoleto justo después de un fetch.
+  const pickUnseen = (category, freshMessages) => {
+    const pool = freshMessages ?? messagesByCategory[category] ?? []
     const seenSet = seen[category] ?? new Set()
-    const available = messages.filter((m) => !seenSet.has(m.id))
-    const pool = available.length > 0 ? available : messages  // reiniciar si los vio todos
+    const available = pool.filter((m) => !seenSet.has(m.id))
+    const candidates = available.length > 0 ? available : pool  // reinicia si los agotó
 
-    if (pool.length === 0) return null
-    const pick = pool[Math.floor(Math.random() * pool.length)]
+    if (candidates.length === 0) return null
+    const pick = candidates[Math.floor(Math.random() * candidates.length)]
 
     setSeen((prev) => ({
       ...prev,
@@ -37,5 +47,5 @@ export const useMessages = () => {
     return pick
   }
 
-  return { messages, loading, error, fetchCategory, pickUnseen }
+  return { loading, error, getMessages, fetchCategory, pickUnseen }
 }

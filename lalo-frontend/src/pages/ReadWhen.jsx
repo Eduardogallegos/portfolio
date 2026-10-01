@@ -16,23 +16,26 @@ export function ReadWhen() {
   const [activeCategory, setActiveCategory] = useState(null)
   const [currentMessage, setCurrentMessage] = useState(null)
   const [modalOpen, setModalOpen] = useState(false)
-  const [fetched, setFetched] = useState(new Set()) // categorías ya cargadas
+  const [fetched, setFetched] = useState(new Set())
 
   const handleCategoryClick = async (cat) => {
     setActiveCategory(cat.slug)
 
-    // Solo hace fetch si no lo había traído antes
+    let messages
     if (!fetched.has(cat.slug)) {
-      await fetchCategory(cat.slug)
+      // fetchCategory retorna los mensajes directamente, sin depender del state
+      messages = await fetchCategory(cat.slug)
       setFetched((prev) => new Set([...prev, cat.slug]))
     }
 
-    const msg = pickUnseen(cat.slug)
+    // Pasamos los mensajes frescos a pickUnseen para evitar leer state obsoleto
+    const msg = pickUnseen(cat.slug, messages)
     setCurrentMessage(msg)
     setModalOpen(true)
   }
 
   const handleOtro = () => {
+    // Aquí el state ya está actualizado (no hay fetch), así que no necesitamos freshMessages
     const msg = pickUnseen(activeCategory)
     setCurrentMessage(msg)
   }

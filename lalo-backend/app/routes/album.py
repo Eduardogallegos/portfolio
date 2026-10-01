@@ -10,6 +10,11 @@ from app.schemas import AlbumEntryCreate, AlbumEntryResponse
 from app.middleware.auth import get_current_user
 from app.config import settings
 
+import time
+
+# Cache de signed URLs: { path: (url, expires_at) }
+_signed_url_cache: dict = {}
+
 router = APIRouter(prefix="/api/album", tags=["album"])
 
 SIGNED_URL_EXPIRY = 3600  # 1 hora
@@ -19,7 +24,13 @@ ALBUM_BUCKET_PREFIX = "album"
 def get_signed_url(image_path: str) -> Optional[str]:
     if not image_path or not settings.SUPABASE_URL or not settings.SUPABASE_SERVICE_KEY:
         return None
-    url = f"{settings.SUPABASE_URL}/storage/v1/object/sign/{settings.SUPABASE_BUCKET}/{image_path}"
+    cached = _signed_url_cache.get(image_path)
+    if cached and cached[1] > time.time():
+        return cached[0]
+    # Si el path incluye el nombre del bucket como prefijo, se lo quitamos.
+    bucket_prefix = settings.SUPABASE_BUCKET + "/"
+    clean_path = image_path[len(bucket_prefix):] if image_path.startswith(bucket_prefix) else image_path
+    url = f"{settings.SUPABASE_URL}/storage/v1/object/sign/{settings.SUPABASE_BUCKET}/{clean_path}"
     headers = {
         "Authorization": f"Bearer {settings.SUPABASE_SERVICE_KEY}",
         "Content-Type": "application/json",
@@ -28,9 +39,17 @@ def get_signed_url(image_path: str) -> Optional[str]:
         resp = http_requests.post(url, json={"expiresIn": SIGNED_URL_EXPIRY}, headers=headers, timeout=5)
         resp.raise_for_status()
         data = resp.json()
-        signed_path = data.get("signedURL")
-        if signed_path:
-            return f"{settings.SUPABASE_URL}{signed_path}"
+        # Supabase puede devolver 'signedURL' (viejo) o 'signedUrl' (nuevo)
+        signed = data.get("signedURL") or data.get("signedUrl") or data.get("url")
+        if signed:
+            if signed.startswith("http"):
+                return signed
+            # Supabase devuelve '/object/sign/...' sin el prefijo '/storage/v1'
+            if signed.startswith("/object/"):
+                signed = "/storage/v1" + signed
+            final_url = f"{settings.SUPABASE_URL}{signed}"
+            _signed_url_cache[image_path] = (final_url, time.time() + 55 * 60)
+            return final_url
     except Exception:
         pass
     return None
