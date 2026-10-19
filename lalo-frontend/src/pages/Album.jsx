@@ -148,7 +148,7 @@ export const Album = () => {
       <header className="album-header">
         <Link to="/pareja" className="album-back">← Volver</Link>
         <div className="album-header-center">
-          <span className="album-header-emoji">🌻</span>
+          <span className="album-header-emoji">🍀</span>
           <h1 className="album-header-title">Álbum de recuerdos</h1>
           <p className="album-header-sub">Momentos, mensajes y fotos guardadas para siempre</p>
         </div>

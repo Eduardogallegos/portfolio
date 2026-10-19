@@ -25,7 +25,7 @@ CONTENT = (
     "sugerencia o experimento es bienvenido.\n\n"
     "Alguna vez prometí construir una página para agendar citas, pero en el camino han "
     "surgido algunas ideas extras, espero te guste.\n\n"
-    "Te amo.\nTu tontito 🌻"
+    "Te amo.\nTu tontito 🍀"
 )
 
 

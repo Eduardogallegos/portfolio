@@ -36,7 +36,7 @@ function ParejaSection() {
       {/* Mensaje nuevo — competencia */}
       <div className="aniversario-section">
         <div className="aniversario-card">
-          <div className="aniversario-flowers" aria-hidden="true">🌻</div>
+          <div className="aniversario-flowers" aria-hidden="true">🍀</div>
           <h2 className="aniversario-title">Mi amor 💛</h2>
           <div className="aniversario-body">
             <p>
@@ -52,7 +52,7 @@ function ParejaSection() {
             </p>
             <p>Muchas felicidades por lo que has logrado.</p>
           </div>
-          <p className="aniversario-signoff">Te amo 🌻</p>
+          <p className="aniversario-signoff">Te amo 🍀</p>
         </div>
       </div>
 
