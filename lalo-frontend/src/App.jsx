@@ -37,7 +37,7 @@ function ParejaSection() {
       <div className="aniversario-section">
         <div className="aniversario-card">
           <div className="aniversario-flowers" aria-hidden="true">🍀</div>
-          <h2 className="aniversario-title">Mi amor 💛</h2>
+          <h2 className="aniversario-title aniversario-title--verde">Mi amor 💛</h2>
           <div className="aniversario-body">
             <p>
               Llegó el día de tu competencia, y no sabes el orgullo que sentí cuando te vi ahí.
