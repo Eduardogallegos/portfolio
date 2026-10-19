@@ -33,6 +33,31 @@ function ParejaSection() {
         </div>
       </nav>
 
+      {/* Mensaje nuevo — competencia */}
+      <div className="aniversario-section">
+        <div className="aniversario-card">
+          <div className="aniversario-flowers" aria-hidden="true">🌻</div>
+          <h2 className="aniversario-title">Mi amor 💛</h2>
+          <div className="aniversario-body">
+            <p>
+              Llegó el día de tu competencia, y no sabes el orgullo que sentí cuando te vi ahí.
+              Te juro que tu alter ego de bailarina me fascina. Estar compitiendo en otro país,
+              otro idioma, todo es distinto y afecta, pero tú lo hacías tan natural que neta es
+              de admirarse.
+            </p>
+            <p>
+              Me encanta verte luchar y cumplir tus sueños, te juro no quiero más que impulsarte
+              a conseguirlos, puedes apoyarte de mi como necesites para que cumplas las metas que
+              te propones, y no solo hablo de bailar, sino en la vida.
+            </p>
+            <p>Muchas felicidades por lo que has logrado.</p>
+          </div>
+          <p className="aniversario-signoff">Te amo 🌻</p>
+        </div>
+      </div>
+
+      <div className="pareja-divider"><span>💌</span></div>
+
       <ReadWhen />
 
       <div className="pareja-divider"><span>💕</span></div>
