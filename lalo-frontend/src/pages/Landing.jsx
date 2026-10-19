@@ -21,7 +21,7 @@ export const Landing = () => (
         Construyendo cosas, rompiendo cosas, aprendiendo en el camino.
       </p>
 
-      <Link to="/pareja/enigma" className="landing-btn">
+      <Link to="/pareja/login" className="landing-btn">
         <span className="landing-btn-prompt">$</span>
         Si eres mi novia, da click aquí 💕
       </Link>
