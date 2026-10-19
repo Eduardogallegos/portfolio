@@ -21,6 +21,22 @@ api.interceptors.request.use(
   (error) => Promise.reject(error)
 )
 
+// Si el servidor rechaza el token (vencido o inválido), cerrar sesión y ir al login
+api.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    const isLoginCall = error.config?.url?.includes('/auth/login')
+    if (error.response?.status === 401 && !isLoginCall) {
+      localStorage.removeItem('access_token')
+      localStorage.removeItem('user')
+      if (window.location.pathname !== '/pareja/login') {
+        window.location.href = '/pareja/login'
+      }
+    }
+    return Promise.reject(error)
+  }
+)
+
 // Auth API
 export const authAPI = {
   register: (email, password, role) =>

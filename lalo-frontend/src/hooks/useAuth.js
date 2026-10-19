@@ -1,16 +1,37 @@
 import { useState } from 'react'
 import { authAPI } from '../utils/api'
 
+// Verifica que el JWT no haya expirado (claim "exp" en segundos)
+const isTokenValid = (token) => {
+  try {
+    const payload = JSON.parse(
+      atob(token.split('.')[1].replace(/-/g, '+').replace(/_/g, '/'))
+    )
+    return typeof payload.exp === 'number' && payload.exp * 1000 > Date.now()
+  } catch (e) {
+    return false
+  }
+}
+
+const clearSession = () => {
+  localStorage.removeItem('access_token')
+  localStorage.removeItem('user')
+}
+
 export const useAuth = () => {
   const [user, setUser] = useState(() => {
     try {
       const token = localStorage.getItem('access_token')
       const userData = localStorage.getItem('user')
-      return token && userData ? JSON.parse(userData) : null
+      if (token && userData && isTokenValid(token)) {
+        return JSON.parse(userData)
+      }
+      // Sesión vencida o incompleta: limpiar para que se pida login
+      clearSession()
+      return null
     } catch (e) {
       console.error('Error parsing user data:', e)
-      localStorage.removeItem('access_token')
-      localStorage.removeItem('user')
+      clearSession()
       return null
     }
   })
@@ -63,8 +84,7 @@ export const useAuth = () => {
   }
 
   const logout = () => {
-    localStorage.removeItem('access_token')
-    localStorage.removeItem('user')
+    clearSession()
     setUser(null)
     window.location.href = '/'
   }
