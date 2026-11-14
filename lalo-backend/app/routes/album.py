@@ -11,6 +11,22 @@ from app.middleware.auth import get_current_user
 from app.config import settings
 
 import time
+from datetime import datetime, timedelta, timezone
+
+# Ciudad de México: UTC-6 fijo (sin horario de verano desde 2022)
+MX_TZ = timezone(timedelta(hours=-6))
+MESES = [
+    "enero", "febrero", "marzo", "abril", "mayo", "junio",
+    "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre",
+]
+
+
+def default_date_label(date_label: Optional[str]) -> str:
+    """Si no se dio etiqueta, usa la fecha de hoy, ej. '20 de octubre, 2026'."""
+    if date_label and date_label.strip():
+        return date_label.strip()
+    now = datetime.now(MX_TZ)
+    return f"{now.day:02d} de {MESES[now.month - 1]}, {now.year}"
 
 # Cache de signed URLs: { path: (url, expires_at) }
 _signed_url_cache: dict = {}
@@ -126,7 +142,7 @@ async def create_entry(
         type=body.type,
         title=body.title,
         content=body.content,
-        date_label=body.date_label,
+        date_label=default_date_label(body.date_label),
         image_url=body.image_url,
         created_by_id=current_user.id,
     )
@@ -140,7 +156,7 @@ async def create_entry(
 @router.post("/upload", response_model=AlbumEntryResponse, status_code=status.HTTP_201_CREATED)
 async def upload_photo(
     title: str = Form(...),
-    date_label: Optional[str] = Form(None),
+    content: Optional[str] = Form(None),
     photo: UploadFile = File(...),
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db),
@@ -158,7 +174,8 @@ async def upload_photo(
     entry = AlbumEntry(
         type="foto",
         title=title,
-        date_label=date_label,
+        content=content or None,
+        date_label=default_date_label(None),
         image_path=image_path,
         created_by_id=current_user.id,
     )
