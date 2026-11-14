@@ -24,14 +24,14 @@ export const useAlbum = () => {
     fetchEntries()
   }, [fetchEntries])
 
-  const uploadPhoto = async (file, title, dateLabel) => {
+  const uploadPhoto = async (file, title, content) => {
     setUploading(true)
     setError(null)
     try {
       const formData = new FormData()
       formData.append('photo', file)
       formData.append('title', title)
-      if (dateLabel) formData.append('date_label', dateLabel)
+      if (content) formData.append('content', content)
       const res = await albumAPI.uploadPhoto(formData)
       setEntries(prev => [res.data, ...prev])
       return res.data

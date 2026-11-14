@@ -7,7 +7,7 @@ import './Album.css'
 function UploadModal({ onClose, onUpload, uploading }) {
   const [file, setFile] = useState(null)
   const [title, setTitle] = useState('')
-  const [dateLabel, setDateLabel] = useState('')
+  const [content, setContent] = useState('')
   const [preview, setPreview] = useState(null)
   const inputRef = useRef()
 
@@ -21,7 +21,7 @@ function UploadModal({ onClose, onUpload, uploading }) {
   const handleSubmit = async (e) => {
     e.preventDefault()
     if (!file || !title.trim()) return
-    await onUpload(file, title.trim(), dateLabel.trim() || null)
+    await onUpload(file, title.trim(), content.trim() || null)
     onClose()
   }
 
@@ -54,12 +54,12 @@ function UploadModal({ onClose, onUpload, uploading }) {
             onChange={e => setTitle(e.target.value)}
             required
           />
-          <input
-            className="modal-input"
-            type="text"
-            placeholder="Fecha o etiqueta (opcional) — ej. Septiembre 2026"
-            value={dateLabel}
-            onChange={e => setDateLabel(e.target.value)}
+          <textarea
+            className="modal-input modal-textarea"
+            placeholder="Texto (opcional) — escribe aquí tu mensaje"
+            value={content}
+            onChange={e => setContent(e.target.value)}
+            rows={4}
           />
           <div className="modal-actions">
             <button type="button" className="modal-btn-cancel" onClick={onClose}>Cancelar</button>
