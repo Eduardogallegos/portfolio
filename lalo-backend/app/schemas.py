@@ -1,4 +1,4 @@
-from pydantic import BaseModel, EmailStr
+from pydantic import BaseModel, EmailStr, Field
 from datetime import datetime
 from typing import Optional
 
@@ -17,6 +17,12 @@ class UserResponse(UserBase):
     
     class Config:
         from_attributes = True
+
+class InviteRegister(BaseModel):
+    """Registro por invitación: el rol lo asigna el servidor, no el cliente."""
+    email: EmailStr
+    password: str = Field(min_length=8, max_length=72)
+    invite_code: str
 
 class UserLogin(BaseModel):
     email: EmailStr

@@ -38,18 +38,23 @@ export const useAuth = () => {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(null)
 
-  const register = async (email, password, role) => {
+  const register = async (email, password, inviteCode) => {
     setLoading(true)
     setError(null)
     try {
-      const response = await authAPI.register(email, password, role)
-      console.log('Register response:', response.data)
-      setUser(response.data)
-      localStorage.setItem('user', JSON.stringify(response.data))
+      const response = await authAPI.register(email, password, inviteCode)
+      const { access_token, user } = response.data
+
+      // El registro ya devuelve sesión: entrar directo a la sección protegida
+      localStorage.setItem('access_token', access_token)
+      localStorage.setItem('user', JSON.stringify(user))
+      setUser(user)
+      window.location.href = '/pareja'
+
       return response.data
     } catch (err) {
-      const errorMsg = err.response?.data?.detail || 'Error registering'
-      console.error('Register error:', errorMsg)
+      const detail = err.response?.data?.detail
+      const errorMsg = typeof detail === 'string' ? detail : 'No se pudo crear la cuenta'
       setError(errorMsg)
       throw err
     } finally {
