@@ -1,9 +1,10 @@
-import { Routes, Route, Navigate, Link } from 'react-router-dom'
+import { Routes, Route, Navigate, Link, useParams } from 'react-router-dom'
 import { useAuth } from './hooks/useAuth'
 import { Landing } from './pages/Landing'
 import { Blog } from './pages/Blog'
 import { BlogPost } from './pages/BlogPost'
 import { Login } from './components/Login'
+import { Register } from './components/Register'
 import { ReadWhen } from './pages/ReadWhen'
 import { Countdown } from './components/Countdown'
 import { DateBooking } from './components/DateBooking'
@@ -85,6 +86,21 @@ function LoginRoute() {
   )
 }
 
+function RegisterRoute() {
+  const { isAuthenticated } = useAuth()
+  const { inviteCode } = useParams()
+
+  if (isAuthenticated) {
+    return <Navigate to="/pareja" replace />
+  }
+
+  return (
+    <div className="app">
+      <Register inviteCode={inviteCode} />
+    </div>
+  )
+}
+
 function App() {
   return (
     <Routes>
@@ -92,6 +108,7 @@ function App() {
       <Route path="/blog" element={<Blog />} />
       <Route path="/blog/:slug" element={<BlogPost />} />
       <Route path="/pareja/login" element={<LoginRoute />} />
+      <Route path="/pareja/registro/:inviteCode" element={<RegisterRoute />} />
       <Route path="/pareja" element={<ParejaSection />} />
       <Route path="/pareja/album" element={<Album />} />
       <Route path="*" element={<Navigate to="/" replace />} />
