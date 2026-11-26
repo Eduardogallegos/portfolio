@@ -20,7 +20,7 @@ function UploadModal({ onClose, onUpload, uploading }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-    if (!file || !title.trim()) return
+    if (!title.trim()) return
     await onUpload(file, title.trim(), content.trim() || null)
     onClose()
   }
@@ -28,7 +28,7 @@ function UploadModal({ onClose, onUpload, uploading }) {
   return (
     <div className="modal-overlay" onClick={onClose}>
       <div className="modal-card" onClick={e => e.stopPropagation()}>
-        <h3 className="modal-title">Agregar foto al álbum</h3>
+        <h3 className="modal-title">Agregar al álbum</h3>
         <form onSubmit={handleSubmit}>
           <div
             className="photo-drop"
@@ -36,7 +36,7 @@ function UploadModal({ onClose, onUpload, uploading }) {
           >
             {preview
               ? <img src={preview} alt="preview" className="photo-preview" />
-              : <span>Toca para elegir una foto 📷</span>
+              : <span>Toca para elegir una foto 📷 (opcional)</span>
             }
             <input
               ref={inputRef}
@@ -66,9 +66,9 @@ function UploadModal({ onClose, onUpload, uploading }) {
             <button
               type="submit"
               className="modal-btn-submit"
-              disabled={!file || !title.trim() || uploading}
+              disabled={!title.trim() || uploading}
             >
-              {uploading ? 'Subiendo…' : 'Guardar'}
+              {uploading ? (file ? 'Subiendo…' : 'Guardando…') : 'Guardar'}
             </button>
           </div>
         </form>
@@ -156,7 +156,7 @@ export const Album = () => {
           className="album-add-btn"
           onClick={() => setShowUpload(true)}
         >
-          + Foto
+          + Agregar
         </button>
       </header>
 

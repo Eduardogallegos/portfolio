@@ -29,14 +29,14 @@ export const useAlbum = () => {
     setError(null)
     try {
       const formData = new FormData()
-      formData.append('photo', file)
+      if (file) formData.append('photo', file)
       formData.append('title', title)
       if (content) formData.append('content', content)
       const res = await albumAPI.uploadPhoto(formData)
       setEntries(prev => [res.data, ...prev])
       return res.data
     } catch (e) {
-      setError('Error al subir la foto.')
+      setError(file ? 'Error al subir la foto.' : 'Error al guardar la entrada.')
       throw e
     } finally {
       setUploading(false)

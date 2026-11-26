@@ -1,6 +1,6 @@
 import uuid
 import requests as http_requests
-from fastapi import APIRouter, Depends, HTTPException, status, UploadFile, File, Form
+from fastapi import APIRouter, BackgroundTasks, Depends, HTTPException, status, UploadFile, File, Form
 from sqlalchemy.orm import Session
 from typing import List, Optional
 
@@ -9,6 +9,7 @@ from app.models import AlbumEntry, User, VALID_ALBUM_TYPES
 from app.schemas import AlbumEntryCreate, AlbumEntryResponse
 from app.middleware.auth import get_current_user
 from app.config import settings
+from app.notifications import notify_new_album_entry
 
 import time
 from datetime import datetime, timedelta, timezone
@@ -32,6 +33,20 @@ def default_date_label(date_label: Optional[str]) -> str:
 _signed_url_cache: dict = {}
 
 router = APIRouter(prefix="/api/album", tags=["album"])
+
+
+def schedule_notification(background: BackgroundTasks, db: Session, author: User, entry: AlbumEntry) -> None:
+    """Avisa por correo a la otra persona (todos los usuarios que no son el autor)."""
+    others = (
+        db.query(User)
+        .filter(User.id != author.id, ~User.email.ilike("%@example.com"))
+        .all()
+    )
+    for other in others:
+        background.add_task(
+            notify_new_album_entry,
+            other.email, author.role, entry.type, entry.title, entry.content,
+        )
 
 SIGNED_URL_EXPIRY = 3600  # 1 hora
 ALBUM_BUCKET_PREFIX = "album"
@@ -129,6 +144,7 @@ async def list_album(
 @router.post("", response_model=AlbumEntryResponse, status_code=status.HTTP_201_CREATED)
 async def create_entry(
     body: AlbumEntryCreate,
+    background: BackgroundTasks,
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db),
 ):
@@ -149,30 +165,35 @@ async def create_entry(
     db.add(entry)
     db.commit()
     db.refresh(entry)
+    schedule_notification(background, db, current_user, entry)
     return build_response(entry)
 
 
 # ── POST /api/album/upload ─────────────────────────────────────────────────────
 @router.post("/upload", response_model=AlbumEntryResponse, status_code=status.HTTP_201_CREATED)
 async def upload_photo(
+    background: BackgroundTasks,
     title: str = Form(...),
     content: Optional[str] = Form(None),
-    photo: UploadFile = File(...),
+    photo: Optional[UploadFile] = File(None),
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db),
 ):
-    """Sube una foto y crea una entrada tipo 'foto' en el álbum."""
-    content_type = photo.content_type or "image/jpeg"
-    if not content_type.startswith("image/"):
-        raise HTTPException(400, "Solo se permiten imágenes.")
+    """Crea una entrada en el álbum. La foto es opcional: sin foto queda como 'mensaje'."""
+    image_path = None
+    has_photo = photo is not None and bool(photo.filename)
+    if has_photo:
+        content_type = photo.content_type or "image/jpeg"
+        if not content_type.startswith("image/"):
+            raise HTTPException(400, "Solo se permiten imágenes.")
 
-    file_bytes = await photo.read()
-    image_path = upload_to_supabase(file_bytes, content_type, photo.filename or "photo.jpg")
-    if not image_path:
-        raise HTTPException(500, "Error al subir la imagen. Intenta de nuevo.")
+        file_bytes = await photo.read()
+        image_path = upload_to_supabase(file_bytes, content_type, photo.filename or "photo.jpg")
+        if not image_path:
+            raise HTTPException(500, "Error al subir la imagen. Intenta de nuevo.")
 
     entry = AlbumEntry(
-        type="foto",
+        type="foto" if image_path else "mensaje",
         title=title,
         content=content or None,
         date_label=default_date_label(None),
@@ -182,6 +203,7 @@ async def upload_photo(
     db.add(entry)
     db.commit()
     db.refresh(entry)
+    schedule_notification(background, db, current_user, entry)
     return build_response(entry)
 
 
